@@ -337,7 +337,6 @@ private:
 	vector<TLorentzVector> vtxLep_BS;
 	vector<TLorentzVector> vtxLep;
 	vector<TLorentzVector> vtxRecoLep_BS;
-	vector<TLorentzVector> vtxRecoLep;
 
 
 	vector<double> vtxLep_BS_pt_NoRoch;	vector<double> vtxLep_BS_pt; 	vector<double> vtxLep_BS_ptError; 	vector<double> vtxLep_BS_eta; 	vector<double> vtxLep_BS_phi; 	vector<double> vtxLep_BS_mass; vector<double> vtxLep_BS_d0;
@@ -346,8 +345,6 @@ private:
 	vector<double> vtxLepFSR_BS_pt; 	vector<double> vtxLepFSR_BS_eta; 	vector<double> vtxLepFSR_BS_phi; 	vector<double> vtxLepFSR_BS_mass;
 	vector<double> vtxLepFSR_pt; 	vector<double> vtxLepFSR_eta; 	vector<double> vtxLepFSR_phi; 	vector<double> vtxLepFSR_mass;
 
-	vector<double> commonPV_x;	vector<double> commonPV_y; 	vector<double> commonPV_z;
-	vector<double> commonBS_x;	vector<double> commonBS_y; 	vector<double> commonBS_z;
 
     vector<double> H_pt; vector<double> H_eta; vector<double> H_phi; vector<double> H_mass;
     vector<double> H_noFSR_pt; vector<double> H_noFSR_eta; vector<double> H_noFSR_phi; vector<double> H_noFSR_mass;
@@ -367,7 +364,6 @@ private:
 	float massZ_vtx_chi2_BS;
 
 
-	vector<float> vtxRecoLep_pt; 	vector<float> vtxRecoLep_ptError; vector<float> vtxRecoLep_eta; 	vector<float> vtxRecoLep_phi; 	vector<float> vtxRecoLep_mass;
     vector<double> Z_pt; vector<double> Z_eta; vector<double> Z_phi; vector<double> Z_mass;
     vector<double> Z_noFSR_pt; vector<double> Z_noFSR_eta; vector<double> Z_noFSR_phi; vector<double> Z_noFSR_mass;
     int Z_Hindex[2]; // position of Z1 and Z2 in Z_p4
@@ -510,11 +506,10 @@ private:
 	
 	vector<double> vtxLepFSR_BS_pt_float; 	vector<double> vtxLepFSR_BS_eta_float; 	vector<double> vtxLepFSR_BS_phi_float; 	vector<double> vtxLepFSR_BS_mass_float;
 	vector<double> vtxLepFSR_pt_float; 	vector<double> vtxLepFSR_eta_float; 	vector<double> vtxLepFSR_phi_float; 	vector<double> vtxLepFSR_mass_float;
-	vector<double> commonPV_x_float;	vector<double> commonPV_y_float; 	vector<double> commonPV_z_float;
-	vector<double> commonBS_x_float;	vector<double> commonBS_y_float; 	vector<double> commonBS_z_float;
+	
 	
 
-	vector<float> vtxRecoLep_pt_float; 	vector<float> vtxRecoLep_ptError_float; 	vector<float> vtxRecoLep_eta_float; 	vector<float> vtxRecoLep_phi_float; 	vector<float> vtxRecoLep_mass_float;
+
 
 
 	vector<float> lep_pt_FromMuonBestTrack_float, lep_eta_FromMuonBestTrack_float, lep_phi_FromMuonBestTrack_float;
@@ -1128,17 +1123,6 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     nisoleptons=0;
     
 	
-	vtxRecoLep.clear();
-	
-	vtxRecoLep_pt.clear();
-	vtxRecoLep_ptError.clear();
-	vtxRecoLep_eta.clear();
-	vtxRecoLep_phi.clear();
-	vtxRecoLep_mass.clear();
-
-	
-
-
 
 
     //tau variables
@@ -1177,13 +1161,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	vtxLepFSR_BS_eta.clear();
 	vtxLepFSR_BS_phi.clear();
 	vtxLepFSR_BS_mass.clear();
-	
-	commonPV_x.clear();	
-	commonPV_y.clear(); 	
-	commonPV_z.clear();
-	commonBS_x.clear();	
-	commonBS_y.clear(); 	
-	commonBS_z.clear();
+
 
     H_pt.clear(); H_eta.clear(); H_phi.clear(); H_mass.clear(); 
     H_noFSR_pt.clear(); H_noFSR_eta.clear(); H_noFSR_phi.clear(); H_noFSR_mass.clear(); 
@@ -1381,21 +1359,6 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	vtxLepFSR_mass_float.clear();
 
 
-
-
-
-	vtxRecoLep_pt_float.clear(); 	 
-	vtxRecoLep_ptError_float.clear(); 	 
-	vtxRecoLep_eta_float.clear(); 	 
-	vtxRecoLep_phi_float.clear(); 	 
-	vtxRecoLep_mass_float.clear();
-
-	commonPV_x_float.clear();	
-	commonPV_y_float.clear(); 	
-	commonPV_z_float.clear();
-	commonBS_x_float.clear();	
-	commonBS_y_float.clear(); 	
-	commonBS_z_float.clear();
 
 	lep_pt_FromMuonBestTrack_float.clear();	lep_eta_FromMuonBestTrack_float.clear();	lep_phi_FromMuonBestTrack_float.clear();
 	lep_position_x_float.clear();	lep_position_y_float.clear();	lep_position_z_float.clear();
@@ -2181,9 +2144,9 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 vector<pat::Muon> selectedMuons;
                 vector<pat::Electron> selectedElectrons;
                  
-                if (verbose) cout<<"begin looking for higgs candidate"<<endl;                    
-                if(isCode4l) findHiggsCandidate(selectedMuons,selectedElectrons,iEvent, iSetup);
-                if (verbose) {cout<<"found higgs candidate? "<<foundHiggsCandidate<<endl; }
+                //if (verbose) cout<<"begin looking for higgs candidate"<<endl;                    
+                //if(isCode4l) findHiggsCandidate(selectedMuons,selectedElectrons,iEvent, iSetup);
+                //if (verbose) {cout<<"found higgs candidate? "<<foundHiggsCandidate<<endl; }
                 
                 // Jets
                 if (verbose) cout<<"begin filling jet candidates"<<endl;
@@ -2391,103 +2354,8 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 
                
                 
-				if((n_lep_e > 1 || n_lep_mu > 1) && !isCode4l){
-					
-					float massLepton;
-					if(n_lep_e > 1) massLepton =  0.00051100;
-					if(n_lep_mu > 1) massLepton = 0.10565837;
-					TLorentzVector Z_Vtx_BS, Z_Vtx; 
-					KalmanVertexFitter KVfitter_recoLepton(true);
 
-					TransientVertex KVertex_recoLepton_BS = KVfitter_recoLepton.vertex(ttv_recoLepton, BS);					
-					if(KVertex_recoLepton_BS.hasRefittedTracks()){
-	
-						massZ_vtx_chi2_BS = KVertex_recoLepton_BS.totalChiSquared()/KVertex_recoLepton_BS.degreesOfFreedom();     			
 
-						std::vector <reco::TransientTrack> ttrks_BS = KVertex_recoLepton_BS.refittedTracks();                  
-						TLorentzVector tmp;
-						tmp.SetPxPyPzE( KalmanRefMu(ttrks_BS.at(0), massLepton).at(3), KalmanRefMu(ttrks_BS.at(0), massLepton).at(4), KalmanRefMu(ttrks_BS.at(0), massLepton).at(5), KalmanRefMu(ttrks_BS.at(0), massLepton).at(6));
-					                    
-				        tmp.SetPxPyPzE( KalmanRefMu(ttrks_BS.at(1), massLepton).at(3), KalmanRefMu(ttrks_BS.at(1), massLepton).at(4), KalmanRefMu(ttrks_BS.at(1), massLepton).at(5), KalmanRefMu(ttrks_BS.at(1), massLepton).at(6)); 
-				    
-
-			
-    		    		
-					}
-									  	    
-					TransientVertex KVertex_recoLepton = KVfitter_recoLepton.vertex(ttv_recoLepton);
-					if(KVertex_recoLepton.hasRefittedTracks()){
-			
-						massZ_vtx_chi2 = KVertex_recoLepton.totalChiSquared()/KVertex_recoLepton.degreesOfFreedom();     
-				
-						std::vector <reco::TransientTrack> ttrks = KVertex_recoLepton.refittedTracks();                  
-						TLorentzVector tmp;
-						tmp.SetPxPyPzE(KalmanRefMu(ttrks.at(0), massLepton).at(3), KalmanRefMu(ttrks.at(0), massLepton).at(4), KalmanRefMu(ttrks.at(0), massLepton).at(5), KalmanRefMu(ttrks.at(0), massLepton).at(6));
-					    vtxRecoLep.push_back(tmp);		                
-				        tmp.SetPxPyPzE(KalmanRefMu(ttrks.at(1), massLepton).at(3), KalmanRefMu(ttrks.at(1), massLepton).at(4), KalmanRefMu(ttrks.at(1), massLepton).at(5), KalmanRefMu(ttrks.at(1), massLepton).at(6)); 
-					    vtxRecoLep.push_back(tmp);
-				    					    
-					    for(int i = 0; i < 2; i++){
-							reco::Track track_vtx = ttrks.at(i).track();
-
-						    vtxRecoLep_pt.push_back(vtxRecoLep.at(i).Pt());
-						    vtxRecoLep_ptError.push_back(track_vtx.ptError());
-				    		vtxRecoLep_eta.push_back(vtxRecoLep.at(i).Eta());
-						    vtxRecoLep_phi.push_back(vtxRecoLep.at(i).Phi());
-						    vtxRecoLep_mass.push_back(vtxRecoLep.at(i).M());
-							Z_Vtx += vtxRecoLep.at(i);
-
-		    		    	if(!isCode4l){
-			    		    	commonPV_x.push_back(KalmanRefMu(ttrks.at(i), massLepton).at(0));
-			    		    	commonPV_y.push_back(KalmanRefMu(ttrks.at(i), massLepton).at(1));
-		    			    	commonPV_z.push_back(KalmanRefMu(ttrks.at(i), massLepton).at(2));
-		    			    }
-	    				}
-
-    		    		mass2l_vtx = Z_Vtx.M();
-					}
-					else{
-					    for(int i = 0; i < 2; i ++){	
-							vtxRecoLep_pt.push_back(-450);
-							vtxRecoLep_ptError.push_back(-450);
-				    		vtxRecoLep_eta.push_back(-450);
-						    vtxRecoLep_phi.push_back(-450);
-						    vtxRecoLep_mass.push_back(-450);
-					    	massZ_vtx_chi2 = -450;
-				    	    mass2l_vtx = -450;
-		    		    	if(!isCode4l){				    	    
-			    		    	commonPV_x.push_back(-450);
-			    		    	commonPV_y.push_back(-450);
-		    			    	commonPV_z.push_back(-450);
-		    			    }
-
-				    	}
-	
-			    	}
-				}
-				else{
-				    for(int i = 0; i < 2; i ++){
-					    vtxRecoLep_pt.push_back(-999);
-					    vtxRecoLep_ptError.push_back(-999);
-			    		vtxRecoLep_eta.push_back(-999);
-					    vtxRecoLep_phi.push_back(-999);
-					    vtxRecoLep_mass.push_back(-999);
-					    massZ_vtx_chi2 = -999;
-			    	    mass2l_vtx = -999;
-	
-					   
-	    		    	
-	    		    	if(!isCode4l){
-		    		    	commonBS_x.push_back(-999);
-		    		    	commonBS_y.push_back(-999);
-	    			    	commonBS_z.push_back(-999);
-	
-		    		    	commonPV_x.push_back(-999);
-	    			    	commonPV_y.push_back(-999);
-	    			    	commonPV_z.push_back(-999);
-	    			    }
-    				}
-				}  
 				                                  
                 // fill the vector<float>
                 lep_d0BS_float.assign(lep_d0BS.begin(),lep_d0BS.end());
@@ -2496,14 +2364,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 				lep_numberOfValidPixelHits_float.assign(lep_numberOfValidPixelHits.begin(),lep_numberOfValidPixelHits.end());
 				lep_trackerLayersWithMeasurement_float.assign(lep_trackerLayersWithMeasurement.begin(),lep_trackerLayersWithMeasurement.end());
 
-                
-
-				commonPV_x_float.assign(commonPV_x.begin(),commonPV_x.end());
-				commonPV_y_float.assign(commonPV_y.begin(),commonPV_y.end());
-				commonPV_z_float.assign(commonPV_z.begin(),commonPV_z.end());
-				commonBS_x_float.assign(commonBS_x.begin(),commonBS_x.end());
-				commonBS_y_float.assign(commonBS_y.begin(),commonBS_y.end());
-				commonBS_z_float.assign(commonBS_z.begin(),commonBS_z.end());
+  
 
 
                 lep_pt_UnS_float.assign(lep_pt_UnS.begin(),lep_pt_UnS.end());
@@ -3208,11 +3069,6 @@ UFHZZ4LAna::findHiggsCandidate(std::vector< pat::Muon > &selectedMuons, std::vec
 			massH_vtx_chi2_BS = -999;
 			TLorentzVector tmp;
 			tmp.SetPxPyPzE(-999,-999,-999,-999);
-			for(int i = 0; i < 4; i ++){
-				commonBS_x.push_back(-999);
-				commonBS_y.push_back(-999);
-				commonBS_z.push_back(-999);
-			}        
 		}
 
 		TransientVertex KVertex = KVfitter.vertex(ttv);
@@ -3240,16 +3096,7 @@ UFHZZ4LAna::findHiggsCandidate(std::vector< pat::Muon > &selectedMuons, std::vec
 				tmp.SetPtEtaPhiM(selectedElectrons.at(1).pt(), selectedElectrons.at(1).eta(), selectedElectrons.at(1).phi(), selectedElectrons.at(1).mass());
 			    vtxLep.push_back(tmp);
 				vtxLep_ptError.push_back(lep_pterr[lep_Hindex[3]]);
-				for(int i = 0; i < 2; i ++){
-					commonPV_x.push_back(KalmanRefMu(ttrk.at(i), mass.at(i)).at(0));
-					commonPV_y.push_back(KalmanRefMu(ttrk.at(i), mass.at(i)).at(1));
-					commonPV_z.push_back(KalmanRefMu(ttrk.at(i), mass.at(i)).at(2));
-				}
-				for(int i = 0; i < 2; i ++){
-					commonPV_x.push_back(-999);
-					commonPV_y.push_back(-999);
-					commonPV_z.push_back(-999);
-				}
+				
 
 
 			}
@@ -3274,16 +3121,7 @@ UFHZZ4LAna::findHiggsCandidate(std::vector< pat::Muon > &selectedMuons, std::vec
 			    vtxLep.push_back(tmp);
 				vtxLep_ptError.push_back(track_vtx_BS.ptError());
 				//vtxLep_d0.push_back(track_vtx_BS.dxy(BS.position()));
-				for(int i = 2; i < 4; i ++){
-					commonPV_x.push_back(KalmanRefMu(ttrk.at(i), mass.at(i)).at(0));
-					commonPV_y.push_back(KalmanRefMu(ttrk.at(i), mass.at(i)).at(1));
-					commonPV_z.push_back(KalmanRefMu(ttrk.at(i), mass.at(i)).at(2));
-				}
-				for(int i = 0; i < 2; i ++){
-					commonPV_x.push_back(-999);
-					commonPV_y.push_back(-999);
-					commonPV_z.push_back(-999);
-				}	
+				
 			}
 			else if(RecoFourEEvent){
 				TLorentzVector tmp;
@@ -3292,9 +3130,7 @@ UFHZZ4LAna::findHiggsCandidate(std::vector< pat::Muon > &selectedMuons, std::vec
 				    vtxLep.push_back(tmp);
 					vtxLep_ptError.push_back(lep_pterr[lep_Hindex[i]]);
 					//vtxLep_d0.push_back(lep_d0BS[lep_Hindex[i]]);
-					commonPV_x.push_back(-999);
-					commonPV_y.push_back(-999);
-					commonPV_z.push_back(-999);
+					
 				
 				}
 			}
@@ -3312,11 +3148,7 @@ UFHZZ4LAna::findHiggsCandidate(std::vector< pat::Muon > &selectedMuons, std::vec
 		
 				    vtxLep.push_back(tmp);
 				}        
-				for(int i = 0; i < 4; i ++){
-					commonPV_x.push_back(KalmanRefMu(ttrks.at(i), mass.at(i)).at(0));
-					commonPV_y.push_back(KalmanRefMu(ttrks.at(i), mass.at(i)).at(1));
-					commonPV_z.push_back(KalmanRefMu(ttrks.at(i), mass.at(i)).at(2));
-				}
+				
 			}		    
 
     
@@ -3327,10 +3159,7 @@ UFHZZ4LAna::findHiggsCandidate(std::vector< pat::Muon > &selectedMuons, std::vec
 			tmp.SetPxPyPzE(-999,-999,-999,-999);
 			for(int i = 0; i < 4; i ++){
 				vtxLep.push_back(tmp);	
-				vtxLep_ptError.push_back(-999);	                
-				commonPV_x.push_back(-999);
-				commonPV_x.push_back(-999);
-				commonPV_x.push_back(-999);
+				vtxLep_ptError.push_back(-999);	 
 			}        
 		}	
 
@@ -3582,19 +3411,6 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("lep_isEB",&lep_isEB);
     tree->Branch("lep_isEE",&lep_isEE);
 
-
-    tree->Branch("vtxRecoLep_pt",&vtxRecoLep_pt_float);
-    tree->Branch("vtxRecoLep_ptError",&vtxRecoLep_ptError_float);
-    tree->Branch("vtxRecoLep_eta",&vtxRecoLep_eta_float);
-    tree->Branch("vtxRecoLep_phi",&vtxRecoLep_phi_float);
-    tree->Branch("vtxRecoLep_mass",&vtxRecoLep_mass_float);
-
-    tree->Branch("commonPV_x",&commonPV_x_float);
-    tree->Branch("commonPV_y",&commonPV_y_float);
-    tree->Branch("commonPV_z",&commonPV_z_float);
-    tree->Branch("commonBS_x",&commonBS_x_float);
-    tree->Branch("commonBS_y",&commonBS_y_float);
-    tree->Branch("commonBS_z",&commonBS_z_float);
 
     tree->Branch("lep_pt_UnS",&lep_pt_UnS_float);
     tree->Branch("lep_pterrold_UnS",&lep_pterrold_UnS_float);
