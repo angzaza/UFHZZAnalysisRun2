@@ -17,19 +17,21 @@ process.GlobalTag.globaltag='102X_upgrade2018_realistic_v18'
 
 process.Timing = cms.Service("Timing",
                              summaryOnly = cms.untracked.bool(True)
+
                              )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 myfilelist = cms.untracked.vstring(
 
+'/store/mc/RunIIAutumn18MiniAOD/VBFHToCC_M-125_13TeV_powheg_pythia8_weightfix/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/230000/0439AF60-149F-2748-B622-ECA18EA52620.root',
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/05E52C52-517A-0E4A-9147-FB37339ECBAE.root',
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/0A4E13EB-0E09-F346-A8E9-B1BF01BD920B.root',
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/0FDDC278-35AA-5840-A23E-1B5082080832.root',
-'/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/1FB038E2-FFE6-C045-8B9C-E7990C8D6473.root',
-'/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/23EF02DF-AA23-A446-961C-EA89F806D348.root',
-'/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/2E7EB2CA-19F3-C34F-A55D-572BEAF6DE3B.root',
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/1FB038E2-FFE6-C045-8B9C-E7990C8D6473.root',
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/23EF02DF-AA23-A446-961C-EA89F806D348.root',
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/2E7EB2CA-19F3-C34F-A55D-572BEAF6DE3B.root',
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/380701E8-FDED-0C40-8215-35B2185A30B4.root',
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/476D26E9-498D-1849-8DB0-30E26269609D.root',
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/5214D5A7-55C6-5143-B9BD-74F4D382DE00.root',
@@ -81,7 +83,7 @@ process.source = cms.Source("PoolSource",fileNames = myfilelist,
                             )
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("DUMMYFILENAME.root")
+                                   fileName = cms.string("VBFHcc2018_10_provaNoMelaStxs.root")
 )
 
 # clean muons by segments 
@@ -196,7 +198,7 @@ era = "Autumn18_V19_MC"
 # for HPC
 dBFile = os.environ.get('CMSSW_BASE')+"/src/UFHZZAnalysisRun2/UFHZZ4LAna/data/"+era+".db"
 # for crab
-dBFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/"+era+".db"
+#dBFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/"+era+".db"
 process.jec = cms.ESSource("PoolDBESSource",
                            CondDBSetup,
                            connect = cms.string("sqlite_file:"+dBFile),
@@ -264,7 +266,7 @@ process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
 # for hpc
 dBJERFile = os.environ.get('CMSSW_BASE')+"/src/UFHZZAnalysisRun2/UFHZZ4LAna/data/Autumn18_V7_MC.db"   
 # for crab
-dBJERFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/Autumn18_V7_MC.db"
+#dBJERFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/Autumn18_V7_MC.db"
 process.jer = cms.ESSource("PoolDBESSource",
         CondDBSetup,
         connect = cms.string("sqlite_file:"+dBJERFile),
@@ -295,7 +297,7 @@ qgDatabaseVersion = 'cmssw8020_v2'
 # for hpc
 QGdBFile = os.environ.get('CMSSW_BASE')+"/src/UFHZZAnalysisRun2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 # for crab
-QGdBFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
+#QGdBFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
       DBParameters = cms.PSet(messageLevel = cms.untracked.int32(1)),
       timetype = cms.string('runnumber'),
@@ -397,21 +399,30 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
                               doJEC = cms.untracked.bool(True),
                               doTriggerMatching = cms.untracked.bool(False),
                               triggerList = cms.untracked.vstring(
+                                  #Hcc trigger from gg analysis
+                                   'HLT_AK8PFHT800_TrimMass50'
+                                   'HLT_AK8PFJet330_TrimMass30_PFAK8BoostedDoubleB_np2'
+                                   'HLT_AK8PFJet400_TrimMass30'
+                                   'HLT_AK8PFJet420_TrimMass30'
+                                   'HLT_AK8PFJet500'
+                                   'HLT_PFHT1050'
+                                   'HLT_PFJet500'
+
                                   # Toni
-                                  'HLT_Ele32_WPTight_Gsf_v', 
-                                  'HLT_IsoMu24_v',
-                                  'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v',
-                                  'HLT_DoubleEle25_CaloIdL_MW_v',
-                                  'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v',
-                                  'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v',
-                                  'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v',
-                                  'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v',
-                                  'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v',
-                                  'HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_v',
-                                  'HLT_TripleMu_10_5_5_DZ_v',             
-                                  'HLT_TripleMu_12_10_5_v',               
-                                  'HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v',   
-                                  'HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ_v',
+#                                  'HLT_Ele32_WPTight_Gsf_v', 
+#                                  'HLT_IsoMu24_v',
+#                                  'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v',
+#                                  'HLT_DoubleEle25_CaloIdL_MW_v',
+#                                  'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v',
+#                                  'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v',
+#                                  'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v',
+#                                  'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v',
+#                                  'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v',
+#                                  'HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_v',
+#                                  'HLT_TripleMu_10_5_5_DZ_v',             
+#                                  'HLT_TripleMu_12_10_5_v',               
+#                                  'HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v',   
+#                                  'HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ_v',
                                   # OLD
 #                                  'HLT_Ele32_WPTight_Gsf_v',
 #                                  'HLT_IsoMu24_v',
