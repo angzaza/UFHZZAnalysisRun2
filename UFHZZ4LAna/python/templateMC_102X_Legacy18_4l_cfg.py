@@ -21,11 +21,14 @@ process.Timing = cms.Service("Timing",
                              )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 myfilelist = cms.untracked.vstring(
 
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToCC_M-125_13TeV_powheg_MINLO_NNLOPS_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/00000/00F62CA9-EFBA-044D-9884-D9023704AD95.root',
+
 '/store/mc/RunIIAutumn18MiniAOD/VBFHToCC_M-125_13TeV_powheg_pythia8_weightfix/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/230000/0439AF60-149F-2748-B622-ECA18EA52620.root',
+
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/05E52C52-517A-0E4A-9147-FB37339ECBAE.root',
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/0A4E13EB-0E09-F346-A8E9-B1BF01BD920B.root',
 # '/store/mc/RunIIAutumn18MiniAOD/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/270000/0FDDC278-35AA-5840-A23E-1B5082080832.root',
@@ -83,7 +86,7 @@ process.source = cms.Source("PoolSource",fileNames = myfilelist,
                             )
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("VBFHcc2018_10_provaNoMelaStxs.root")
+                                   fileName = cms.string("VBFHToCC_trigger.root")
 )
 
 # clean muons by segments 
@@ -400,13 +403,18 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
                               doTriggerMatching = cms.untracked.bool(False),
                               triggerList = cms.untracked.vstring(
                                   #Hcc trigger from gg analysis
-                                   'HLT_AK8PFHT800_TrimMass50'
-                                   'HLT_AK8PFJet330_TrimMass30_PFAK8BoostedDoubleB_np2'
-                                   'HLT_AK8PFJet400_TrimMass30'
-                                   'HLT_AK8PFJet420_TrimMass30'
-                                   'HLT_AK8PFJet500'
-                                   'HLT_PFHT1050'
-                                   'HLT_PFJet500'
+                                   'HLT_AK8PFHT800_TrimMass50',
+                                   'HLT_AK8PFJet330_TrimMass30_PFAK8BoostedDoubleB_np2',
+                                   'HLT_AK8PFJet400_TrimMass30',
+                                   'HLT_AK8PFJet420_TrimMass30',
+                                   'HLT_AK8PFJet500',
+                                   'HLT_PFHT1050',
+                                   'HLT_PFJet500',
+
+				  # prova trigger VBF
+				   #'HLT_DiPFJetAve40_v14',
+				   #'HLT_AK8PFJet15_v3',
+				   #'HLT_AK8PFJet25_v3',
 
                                   # Toni
 #                                  'HLT_Ele32_WPTight_Gsf_v', 
