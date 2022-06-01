@@ -394,6 +394,7 @@ private:
     vector<float>  jet_bTagEffi;
     vector<float>  jet_cTagEffi;
     vector<float>  jet_udsgTagEffi;
+		vector<float>  jet_csv_cTag_vsL, jet_csv_cTag_vsB;
     vector<int>    jet_jesup_iscleanH4l;
     vector<double> jet_jesup_pt; vector<double> jet_jesup_eta; 
     vector<double> jet_jesup_phi; vector<double> jet_jesup_mass;
@@ -541,6 +542,7 @@ private:
     vector<float> Z_pt_float, Z_eta_float, Z_phi_float, Z_mass_float;
     vector<float> Z_noFSR_pt_float, Z_noFSR_eta_float;
     vector<float> Z_noFSR_phi_float, Z_noFSR_mass_float;*/
+		int n_jets=0;
     vector<float> jet_pt_float, jet_eta_float, jet_phi_float, jet_mass_float, jet_pt_raw_float;
     vector<float> jet_jesup_pt_float, jet_jesup_eta_float; 
     vector<float> jet_jesup_phi_float, jet_jesup_mass_float;
@@ -558,6 +560,7 @@ private:
     vector<float> GENH_phi_float, GENH_mass_float;
     vector<float> GENZ_pt_float, GENZ_eta_float;
     vector<float> GENZ_phi_float, GENZ_mass_float;
+		int n_GENjets=0;
     vector<float> GENjet_pt_float, GENjet_eta_float;
     vector<float> GENjet_phi_float, GENjet_mass_float;
 
@@ -985,8 +988,10 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   
   
   // Jets
-  jet_pt.clear(); jet_eta.clear(); jet_phi.clear(); jet_mass.clear(); jet_pt_raw.clear(); 
-  jet_jesup_pt.clear(); jet_jesup_eta.clear(); jet_jesup_phi.clear(); jet_jesup_mass.clear(); 
+  n_jets=0;
+	jet_pt.clear(); jet_eta.clear(); jet_phi.clear(); jet_mass.clear();jet_pt_raw.clear(); 
+	jet_csv_cTag_vsL.clear(); jet_csv_cTag_vsB.clear();
+	jet_jesup_pt.clear(); jet_jesup_eta.clear(); jet_jesup_phi.clear(); jet_jesup_mass.clear(); 
   jet_jesdn_pt.clear(); jet_jesdn_eta.clear(); jet_jesdn_phi.clear(); jet_jesdn_mass.clear(); 
   jet_jerup_pt.clear(); jet_jerup_eta.clear(); jet_jerup_phi.clear(); jet_jerup_mass.clear(); 
   jet_jerdn_pt.clear(); jet_jerdn_eta.clear(); jet_jerdn_phi.clear(); jet_jerdn_mass.clear(); 
@@ -1055,6 +1060,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   passedFiducialSelection=false;
   
   // Jets
+  n_GENjets=0;
   GENjet_pt.clear(); GENjet_eta.clear(); GENjet_phi.clear(); GENjet_mass.clear(); 
   GENnjets_pt30_eta4p7=0;
   GENnjets_pt30_eta2p5=0;
@@ -1576,6 +1582,7 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("met_phi_uncendn",&met_phi_uncendn,"met_phi_uncendn/F");
 
     // Jets
+    tree->Branch("n_jets", &n_jets);
     tree->Branch("jet_iscleanH4l",&jet_iscleanH4l);
     tree->Branch("jet1index",&jet1index,"jet1index/I");
     tree->Branch("jet2index",&jet2index,"jet2index/I");
@@ -1585,11 +1592,13 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("jet_eta",&jet_eta_float);
     tree->Branch("jet_phi",&jet_phi_float);
     tree->Branch("jet_phierr",&jet_phierr);
+		tree->Branch("jet_csv_cTag_vsL",&jet_csv_cTag_vsL);
+		tree->Branch("jet_csv_cTag_vsB",&jet_csv_cTag_vsB);
     /*tree->Branch("jet_bTagEffi",&jet_bTagEffi);
     tree->Branch("jet_cTagEffi",&jet_cTagEffi);
-    tree->Branch("jet_udsgTagEffi",&jet_udsgTagEffi);
+    tree->Branch("jet_udsgTagEffi",&jet_udsgTagEffi);*/
     tree->Branch("jet_mass",&jet_mass_float);    
-    tree->Branch("jet_jesup_iscleanH4l",&jet_jesup_iscleanH4l);
+    /*tree->Branch("jet_jesup_iscleanH4l",&jet_jesup_iscleanH4l);
     tree->Branch("jet_jesup_pt",&jet_jesup_pt_float);
     tree->Branch("jet_jesup_eta",&jet_jesup_eta_float);
     tree->Branch("jet_jesup_phi",&jet_jesup_phi_float);
@@ -1766,11 +1775,12 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
 
 
     // Jets
+    tree->Branch("n_GENjets", &n_GENjets);
     tree->Branch("GENjet_pt",&GENjet_pt_float);
     tree->Branch("GENjet_eta",&GENjet_eta_float);
     tree->Branch("GENjet_phi",&GENjet_phi_float);
-    /*tree->Branch("GENjet_mass",&GENjet_mass_float);
-    tree->Branch("GENnjets_pt30_eta4p7",&GENnjets_pt30_eta4p7,"GENnjets_pt30_eta4p7/I");
+    tree->Branch("GENjet_mass",&GENjet_mass_float);
+    /*tree->Branch("GENnjets_pt30_eta4p7",&GENnjets_pt30_eta4p7,"GENnjets_pt30_eta4p7/I");
     tree->Branch("GENpt_leadingjet_pt30_eta4p7",&GENpt_leadingjet_pt30_eta4p7,"GENpt_leadingjet_pt30_eta4p7/F");
     tree->Branch("GENabsrapidity_leadingjet_pt30_eta4p7",&GENabsrapidity_leadingjet_pt30_eta4p7,"GENabsrapidity_leadingjet_pt30_eta4p7/F");
     tree->Branch("GENabsdeltarapidity_hleadingjet_pt30_eta4p7",&GENabsdeltarapidity_hleadingjet_pt30_eta4p7,"GENabsdeltarapidity_hleadingjet_pt30_eta4p7/F");
@@ -1817,13 +1827,16 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
     // Jet Info
     double tempDeltaR = 999.0;
     //std::cout<<"ELISA = "<<"good jets "<<goodJets.size()<<std::endl;
+    n_jets=goodJets.size();
     for( unsigned int k = 0; k < goodJets.size(); k++) {
 
         jet_pt.push_back(goodJets[k].pt());
         jet_pt_raw.push_back(goodJets[k].pt());///jet Pt without JEC applied
         jet_eta.push_back(goodJets[k].eta());
         jet_phi.push_back(goodJets[k].phi());
-        //jet_mass.push_back(goodJets[k].M());
+        jet_mass.push_back(goodJets[k].mass());
+        jet_csv_cTag_vsL.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") / (goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probuds") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probg")) );
+				jet_csv_cTag_vsB.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") / (goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probb") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probbb") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:problepb")) );
 
        
     } // loop over jets
@@ -1906,6 +1919,7 @@ void UFHZZ4LAna::setGENVariables(edm::Handle<edm::View<reco::GenJet> > genJets)
 {
 
         edm::View<reco::GenJet>::const_iterator genjet; 
+	
 	for(genjet = genJets->begin(); genjet != genJets->end(); genjet++) {
 		                          
 		  double pt = genjet->pt();  double eta = genjet->eta();
@@ -1916,7 +1930,7 @@ void UFHZZ4LAna::setGENVariables(edm::Handle<edm::View<reco::GenJet> > genJets)
       GENjet_eta.push_back(genjet->eta());
       GENjet_phi.push_back(genjet->phi());
       GENjet_mass.push_back(genjet->mass());
-
+	n_GENjets++;
 	}// loop over gen jets
 
          
