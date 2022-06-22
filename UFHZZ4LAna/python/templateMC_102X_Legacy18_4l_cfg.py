@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+#import CondCore.CondDB.CondDB_cfi
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 
@@ -21,7 +22,15 @@ process.Timing = cms.Service("Timing",
                              )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+
+process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+process.printTree = cms.EDAnalyzer("ParticleListDrawer",
+  maxEventsToPrint = cms.untracked.int32(1),
+  printVertex = cms.untracked.bool(False),
+  printOnlyHardInteraction = cms.untracked.bool(False), # Print only status=3 particles. This will not work for Pythia8, which does not have any such particles.
+  src = cms.InputTag("genParticles")
+)
 
 myfilelist = cms.untracked.vstring(
 
@@ -86,7 +95,7 @@ process.source = cms.Source("PoolSource",fileNames = myfilelist,
                             )
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("VBFHToCC_trigger.root")
+                                   fileName = cms.string("VBFHToCC_jetlepL1.root")
 )
 
 # clean muons by segments 
@@ -329,6 +338,14 @@ process.corrJets = cms.EDProducer ( "CorrJetsProducer",
                                     isData  = cms.bool    (  False ),
                                     year = cms.untracked.int32(2018))
 
+process.L1CaloJetHTTProducer = cms.EDProducer("L1CaloJetHTTProducer",
+    EtaMax = cms.double(2.4),
+    PtMin = cms.double(30.0),
+    BXVCaloJetsInputTag = cms.InputTag("L1CaloJetProducer","L1CaloJetCollectionBXV"),
+    genJets = cms.InputTag("ak4GenJetsNoNu", "", "HLT"),
+    debug = cms.bool(False),
+    use_gen_jets = cms.bool(False))
+
 
 # Recompute MET
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
@@ -374,6 +391,7 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
 #                              jetSrc       = cms.untracked.InputTag("slimmedJets"),
                               mergedjetSrc = cms.untracked.InputTag("corrJets"),
                               metSrc       = cms.untracked.InputTag("slimmedMETs","","UFHZZ4LAnalysis"),
+							  bxvCaloJetSrc =  cms.untracked.InputTag("L1CaloJetHTTProducer"),
                               #metSrc       = cms.untracked.InputTag("slimmedMETs"),
                               vertexSrc    = cms.untracked.InputTag("offlineSlimmedPrimaryVertices"),
                               beamSpotSrc  = cms.untracked.InputTag("offlineBeamSpot"),
@@ -476,7 +494,10 @@ process.p = cms.Path(process.fsrPhotonSequence*
                      process.slimmedJetsAK8JEC*
                      process.fullPatMetSequence*
                      process.corrJets*
+					 process.L1CaloJetHTTProducer*
                      process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS*#process.rivetProducerHZZFid*
+		    # process.printTree*
                      process.Ana
-                     )
+		     )
+
 
