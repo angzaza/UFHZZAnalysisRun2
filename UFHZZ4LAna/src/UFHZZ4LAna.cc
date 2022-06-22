@@ -241,18 +241,23 @@ private:
     void setTreeVariables( const edm::Event&, const edm::EventSetup&, 
                            std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger, 
                            std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult, 
-                           std::vector<pat::Jet> selectedMergedJets);
-    void setGENVariables(edm::Handle<edm::View<reco::GenJet> > genJets);
+                           std::vector<pat::Jet> selectedMergedJets,
+						   edm::Handle<BXVector<l1t::Jet> > bxvCaloJets,
+						  // edm::Handle<edm::View<pat::Muon> > muons,
+						  // edm::Handle<edm::View<pat::Electron> > electrons);
+						  std::vector<pat::Muon> AllMuons, std::vector<pat::Electron> AllElectrons); 
+    /*void setGENVariables(edm::Handle<reco::GenParticleCollection> prunedgenParticles,
+			 edm::Handle<edm::View<reco::GenJet> > genJets);*/
     /*void setTreeVariables( const edm::Event&, const edm::EventSetup&, 
                            //std::vector<pat::Muon> selectedMuons, std::vector<pat::Electron> selectedElectrons, 
                            //std::vector<pat::Muon> recoMuons, std::vector<pat::Electron> recoElectrons, 
                            std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger, 
                            std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult, 
                            std::vector<pat::Jet> selectedMergedJets,
-                           //std::map<unsigned int, TLorentzVector> selectedFsrMap);
-    void setGENVariables(//edm::Handle<reco::GenParticleCollection> prunedgenParticles,
-                         //edm::Handle<edm::View<pat::PackedGenParticle> > packedgenParticles,
-                         edm::Handle<edm::View<reco::GenJet> > genJets);*/
+                           //std::map<unsigned int, TLorentzVector> selectedFsrMap);*/
+    void setGENVariables(edm::Handle<reco::GenParticleCollection> prunedgenParticles,
+                         edm::Handle<edm::View<pat::PackedGenParticle> > packedgenParticles,
+                         edm::Handle<edm::View<reco::GenJet> > genJets);
     //bool mZ1_mZ2(unsigned int& L1, unsigned int& L2, unsigned int& L3, unsigned int& L4, bool makeCuts);
 
     // -------------------------
@@ -286,6 +291,7 @@ private:
     float pdfRMSup, pdfRMSdown, pdfENVup, pdfENVdown;
     
     // lepton variables
+	vector<double> lep_pt; vector<double> lep_eta; vector<double> lep_phi; vector<double> lep_mass; vector<int> lep_ID;
     /*vector<double> lep_pt_FromMuonBestTrack, lep_eta_FromMuonBestTrack, lep_phi_FromMuonBestTrack;
     vector<double> lep_position_x, lep_position_y, lep_position_z;
     vector<double> lep_pt_genFromReco;
@@ -382,6 +388,7 @@ private:
     float met_jesup, met_phi_jesup, met_jesdn, met_phi_jesdn;
     float met_uncenup, met_phi_uncenup, met_uncendn, met_phi_uncendn;
 
+
     // Jets
     vector<int>    jet_iscleanH4l;
     int jet1index, jet2index;
@@ -406,7 +413,8 @@ private:
     vector<double> jet_jerup_phi; vector<double> jet_jerup_mass;
     vector<int>    jet_jerdn_iscleanH4l;
     vector<double> jet_jerdn_pt; vector<double> jet_jerdn_eta; 
-    vector<double> jet_jerdn_phi; vector<double> jet_jerdn_mass;    
+    vector<double> jet_jerdn_phi; vector<double> jet_jerdn_mass;
+	vector<double> L1jet_pt; vector<double> L1jet_eta; vector<double> L1jet_phi;
     int njets_pt30_eta4p7; int njets_pt30_eta4p7_jesup; int njets_pt30_eta4p7_jesdn; 
     int njets_pt30_eta4p7_jerup; int njets_pt30_eta4p7_jerdn;
     int njets_pt30_eta2p5; int njets_pt30_eta2p5_jesup; int njets_pt30_eta2p5_jesdn; 
@@ -457,6 +465,8 @@ private:
     float minMass2Lep, maxMass2Lep;
     float thetaPhoton, thetaPhotonZ;*/
 
+	   
+
     // Event Category
     int EventCat;
 
@@ -490,7 +500,8 @@ private:
     float GENHmass;*/
 
     // Jets
-    vector<double> GENjet_pt; vector<double> GENjet_eta; vector<double> GENjet_phi; vector<double> GENjet_mass; 
+    vector<double> GENjet_pt; vector<double> GENjet_eta; vector<double> GENjet_phi; vector<double> GENjet_mass;
+    vector<double> quark_pt; vector<double> quark_eta; vector<double> quark_phi; vector<int> quark_flavour; vector<bool> quark_VBF; 
     int GENnjets_pt30_eta4p7; float GENpt_leadingjet_pt30_eta4p7; 
     int GENnjets_pt30_eta2p5; float GENpt_leadingjet_pt30_eta2p5; 
     float GENabsrapidity_leadingjet_pt30_eta4p7; float GENabsdeltarapidity_hleadingjet_pt30_eta4p7;
@@ -542,7 +553,8 @@ private:
     vector<float> Z_pt_float, Z_eta_float, Z_phi_float, Z_mass_float;
     vector<float> Z_noFSR_pt_float, Z_noFSR_eta_float;
     vector<float> Z_noFSR_phi_float, Z_noFSR_mass_float;*/
-		int n_jets=0;
+	vector<float> lep_pt_float, lep_eta_float, lep_phi_float, lep_mass_float;
+	int n_jets=0;
     vector<float> jet_pt_float, jet_eta_float, jet_phi_float, jet_mass_float, jet_pt_raw_float;
     vector<float> jet_jesup_pt_float, jet_jesup_eta_float; 
     vector<float> jet_jesup_phi_float, jet_jesup_mass_float;
@@ -560,15 +572,17 @@ private:
     vector<float> GENH_phi_float, GENH_mass_float;
     vector<float> GENZ_pt_float, GENZ_eta_float;
     vector<float> GENZ_phi_float, GENZ_mass_float;
-		int n_GENjets=0;
+	int n_GENjets=0;
     vector<float> GENjet_pt_float, GENjet_eta_float;
     vector<float> GENjet_phi_float, GENjet_mass_float;
+    vector<float> quark_pt_float, quark_eta_float, quark_phi_float;
+	vector<float> L1jet_pt_float, L1jet_eta_float, L1jet_phi_float; 
 
     // Global Variables but not stored in the tree
    /* vector<double> lep_ptreco;
-    vector<int> lep_ptid; vector<int> lep_ptindex;
+    vector<int> lep_ptid; vector<int> lep_ptindex;*/
     vector<pat::Muon> recoMuons; vector<pat::Electron> recoElectrons; vector<pat::Electron> recoElectronsUnS; 
-    vector<pat::Tau> recoTaus; vector<pat::Photon> recoPhotons;
+    /*vector<pat::Tau> recoTaus; vector<pat::Photon> recoPhotons;
     vector<pat::PFParticle> fsrPhotons; 
     TLorentzVector HVec, HVecNoFSR, Z1Vec, Z2Vec;
     TLorentzVector GENZ1Vec, GENZ2Vec;
@@ -581,12 +595,13 @@ private:
     std::map<std::string,TH1F*> histContainer_;
 
     //Input edm
-    /*edm::EDGetTokenT<edm::View<pat::Electron> > elecSrc_;
+    edm::EDGetTokenT<edm::View<pat::Electron> > elecSrc_;
     edm::EDGetTokenT<edm::View<pat::Electron> > elecUnSSrc_;
     edm::EDGetTokenT<edm::View<pat::Muon> > muonSrc_;
-    edm::EDGetTokenT<edm::View<pat::Tau> > tauSrc_;
+    /*edm::EDGetTokenT<edm::View<pat::Tau> > tauSrc_;
     edm::EDGetTokenT<edm::View<pat::Photon> > photonSrc_;*/
     edm::EDGetTokenT<edm::View<pat::Jet> > jetSrc_;
+	edm::EDGetTokenT<BXVector<l1t::Jet>> bxvCaloJetSrc_;
     edm::EDGetTokenT<edm::ValueMap<float> > qgTagSrc_;
     edm::EDGetTokenT<edm::ValueMap<float> > axis2Src_;
     edm::EDGetTokenT<edm::ValueMap<int> > multSrc_;
@@ -598,8 +613,7 @@ private:
     edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
     edm::EDGetTokenT<reco::VertexCollection> vertexSrc_;
     edm::EDGetTokenT<reco::BeamSpot> beamSpotSrc_;
-    edm::EDGetTokenT<std::vector<reco::Conversion> > conversionSrc_;
-    edm::EDGetTokenT<double> muRhoSrc_;
+
     edm::EDGetTokenT<double> elRhoSrc_;
     edm::EDGetTokenT<double> rhoSrcSUS_;
     edm::EDGetTokenT<std::vector<PileupSummaryInfo> > pileupSrc_;
@@ -668,8 +682,12 @@ private:
 
 
 UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
-	histContainer_(),
-	jetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jetSrc"))),  
+  histContainer_(),
+  elecSrc_(consumes<edm::View<pat::Electron> >(iConfig.getUntrackedParameter<edm::InputTag>("electronSrc"))),
+  elecUnSSrc_(consumes<edm::View<pat::Electron> >(iConfig.getUntrackedParameter<edm::InputTag>("electronUnSSrc"))),
+  muonSrc_(consumes<edm::View<pat::Muon> >(iConfig.getUntrackedParameter<edm::InputTag>("muonSrc"))),
+  jetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jetSrc"))),  
+  bxvCaloJetSrc_(consumes<BXVector<l1t::Jet>>(iConfig.getParameter<edm::InputTag>("bxvCaloJetSrc"))),
   qgTagSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "qgLikelihood"))),
   axis2Src_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "axis2"))),
   multSrc_(consumes<edm::ValueMap<int>>(edm::InputTag("QGTagger", "mult"))),
@@ -680,8 +698,8 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
   triggerObjects_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
   vertexSrc_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vertexSrc"))),
   beamSpotSrc_(consumes<reco::BeamSpot>(iConfig.getUntrackedParameter<edm::InputTag>("beamSpotSrc"))),
-  conversionSrc_(consumes<std::vector<reco::Conversion> >(iConfig.getUntrackedParameter<edm::InputTag>("conversionSrc"))),
-  muRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("muRhoSrc"))),
+  //conversionSrc_(consumes<std::vector<reco::Conversion> >(iConfig.getUntrackedParameter<edm::InputTag>("conversionSrc"))),
+  //muRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("muRhoSrc"))),
   elRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("elRhoSrc"))),
   rhoSrcSUS_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("rhoSrcSUS"))),
   pileupSrc_(consumes<std::vector<PileupSummaryInfo> >(iConfig.getUntrackedParameter<edm::InputTag>("pileupSrc"))),
@@ -906,6 +924,21 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // ======= Get Collections ======= //
   if (verbose) {cout<<"getting collections"<<endl;}
 
+  // electron collection
+  edm::Handle<edm::View<pat::Electron> > electrons;
+  iEvent.getByToken(elecSrc_,electrons);
+  if (verbose) cout<<electrons->size()<<" total electrons in the collection"<<endl;
+  
+  // electron before scale/smearing corrections
+  //edm::Handle<edm::View<pat::Electron> > electronsUnS;
+  //Event.getByToken(elecUnSSrc_,electronsUnS);
+  
+  // muon collection
+  edm::Handle<edm::View<pat::Muon> > muons;
+  iEvent.getByToken(muonSrc_,muons);
+  if (verbose) cout<<muons->size()<<" total muons in the collection"<<endl;
+  //
+
   // trigger collection
   edm::Handle<edm::TriggerResults> trigger;
   iEvent.getByToken(triggerSrc_,trigger);
@@ -923,6 +956,10 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // Jets
   edm::Handle<edm::View<pat::Jet> > jets;
   iEvent.getByToken(jetSrc_,jets);
+
+  //L1 Jets
+  edm::Handle<BXVector<l1t::Jet>> bxvCaloJets;
+  iEvent.getByToken(bxvCaloJetSrc_,bxvCaloJets);
 
   if (!jecunc) {
       edm::ESHandle<JetCorrectorParametersCollection> jetCorrParameterSet;
@@ -949,6 +986,13 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
  
   edm::Handle<edm::View<pat::Jet> > mergedjets;
   iEvent.getByToken(mergedjetSrc_,mergedjets);
+
+// GEN collections
+  edm::Handle<reco::GenParticleCollection> prunedgenParticles;
+  iEvent.getByToken(prunedgenParticlesSrc_, prunedgenParticles);
+
+  edm::Handle<edm::View<pat::PackedGenParticle> > packedgenParticles;
+  iEvent.getByToken(packedgenParticlesSrc_, packedgenParticles);
   
   edm::Handle<edm::View<reco::GenJet> > genJets;
   iEvent.getByToken(genJetsSrc_, genJets);
@@ -986,6 +1030,8 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   qcdWeights.clear(); nnloWeights.clear(); pdfWeights.clear();
   pdfRMSup=1.0; pdfRMSdown=1.0; pdfENVup=1.0; pdfENVdown=1.0;
   
+  // Leptons
+  lep_pt.clear(); lep_eta.clear(); lep_phi.clear(); lep_mass.clear(); lep_ID.clear();
   
   // Jets
   n_jets=0;
@@ -1051,6 +1097,8 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   mergedjet_subjet_btag.clear();
   mergedjet_subjet_partonFlavour.clear(); mergedjet_subjet_hadronFlavour.clear();
 
+  L1jet_pt.clear(); L1jet_eta.clear(); L1jet_phi.clear();
+
 	// -------------------------
   // GEN level information
   // ------------------------- 
@@ -1058,6 +1106,9 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   //Event variables
   GENfinalState=-1;
   passedFiducialSelection=false;
+
+  // Leptons
+
   
   // Jets
   n_GENjets=0;
@@ -1068,6 +1119,10 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   GENpt_leadingjet_pt30_eta2p5=-1.0; 
   lheNb=0; lheNj=0; nGenStatus2bHad=0;
 
+  //quarks
+  quark_pt.clear(); quark_eta.clear(); quark_phi.clear(); quark_flavour.clear(); quark_VBF.clear();
+  quark_pt_float.clear(); quark_eta_float.clear(); quark_phi_float.clear();
+
    
 
   if (verbose) {cout<<"clear other variables"<<endl; }
@@ -1077,6 +1132,8 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // Event Category
   EventCat=-1;
   
+  lep_pt_float.clear(); lep_eta_float.clear(); lep_phi_float.clear(); lep_mass_float.clear();
+
   jet1pt=-1.0; jet2pt=-1.0;
   
   jet_pt_float.clear(); jet_eta_float.clear(); jet_phi_float.clear(); jet_mass_float.clear(); jet_pt_raw_float.clear(); 
@@ -1084,14 +1141,14 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   jet_jesdn_pt_float.clear(); jet_jesdn_eta_float.clear(); jet_jesdn_phi_float.clear(); jet_jesdn_mass_float.clear();
   jet_jerup_pt_float.clear(); jet_jerup_eta_float.clear(); jet_jerup_phi_float.clear(); jet_jerup_mass_float.clear();
   jet_jerdn_pt_float.clear(); jet_jerdn_eta_float.clear(); jet_jerdn_phi_float.clear();  jet_jerdn_mass_float.clear();
-  
+  L1jet_pt_float.clear(); L1jet_eta_float.clear(); L1jet_phi_float.clear();
   
   // ====================== Do Analysis ======================== //
   
   
   if(isMC) {
   	if (verbose) cout<<"setting gen variables"<<endl;       
-    setGENVariables(genJets); 
+    setGENVariables(prunedgenParticles,packedgenParticles,genJets); 
     if (verbose) { cout<<"finshed setting gen variables"<<endl;  }
   }
   
@@ -1129,6 +1186,10 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    	met_uncendn = (*mets)[0].shiftedPt(pat::MET::UnclusteredEnDown);
     met_phi_uncendn = (*mets)[0].shiftedPhi(pat::MET::UnclusteredEnDown);        
  	}
+
+	vector<pat::Electron> AllElectrons; vector<pat::Muon> AllMuons;
+    AllElectrons = helper.goodLooseElectrons2012(electrons,_elecPtCut);
+    AllMuons = helper.goodLooseMuons2012(muons,_muPtCut);
  	
  	
  	// Jets
@@ -1189,8 +1250,13 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   
   
   if (verbose) cout<<"begin setting tree variables"<<endl;
-	setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets);
+	setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, bxvCaloJets, AllMuons, AllElectrons);
   if (verbose) cout<<"finshed setting tree variables"<<endl;
+  
+  lep_pt_float.assign(lep_pt.begin(),lep_pt.end());
+  lep_eta_float.assign(lep_eta.begin(),lep_eta.end());
+  lep_phi_float.assign(lep_phi.begin(),lep_phi.end());
+  lep_mass_float.assign(lep_mass.begin(),lep_mass.end());
   
   jet_pt_float.assign(jet_pt.begin(),jet_pt.end());
   jet_pt_raw_float.assign(jet_pt_raw.begin(),jet_pt_raw.end());
@@ -1214,7 +1280,14 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   jet_jerdn_phi_float.assign(jet_jerdn_phi.begin(),jet_jerdn_phi.end());
   jet_jerdn_mass_float.assign(jet_jerdn_mass.begin(),jet_jerdn_mass.end());
   
+  quark_pt_float.assign(quark_pt.begin(),quark_pt.end());
+  quark_eta_float.assign(quark_eta.begin(),quark_eta.end());
+  quark_phi_float.assign(quark_phi.begin(),quark_phi.end());
   if (!isMC) passedEventsTree_All->Fill(); 
+
+  L1jet_pt_float.assign(L1jet_pt.begin(),L1jet_pt.end());
+  L1jet_eta_float.assign(L1jet_eta.begin(),L1jet_eta.end());
+  L1jet_phi_float.assign(L1jet_phi.begin(),L1jet_phi.end());
   
   GENjet_pt_float.clear(); GENjet_pt_float.assign(GENjet_pt.begin(),GENjet_pt.end());
   GENjet_eta_float.clear(); GENjet_eta_float.assign(GENjet_eta.begin(),GENjet_eta.end());
@@ -1419,16 +1492,16 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("lep_position_x",&lep_position_x_float);
     tree->Branch("lep_position_y",&lep_position_y_float);
     tree->Branch("lep_position_z",&lep_position_z_float);
-    tree->Branch("lep_pt_genFromReco",&lep_pt_genFromReco_float);
+    tree->Branch("lep_pt_genFromReco",&lep_pt_genFromReco_float);*/
 
-    tree->Branch("lep_id",&lep_id);
+    tree->Branch("lep_id",&lep_ID);
     tree->Branch("lep_pt",&lep_pt_float);
-    tree->Branch("lep_pterr",&lep_pterr_float);
-    tree->Branch("lep_pterrold",&lep_pterrold_float);
+    //tree->Branch("lep_pterr",&lep_pterr_float);
+    //tree->Branch("lep_pterrold",&lep_pterrold_float);
     tree->Branch("lep_eta",&lep_eta_float);
     tree->Branch("lep_phi",&lep_phi_float);
     tree->Branch("lep_mass",&lep_mass_float);
-    tree->Branch("lepFSR_pt",&lepFSR_pt_float);
+    /*tree->Branch("lepFSR_pt",&lepFSR_pt_float);
     tree->Branch("lepFSR_eta",&lepFSR_eta_float);
     tree->Branch("lepFSR_phi",&lepFSR_phi_float);
     tree->Branch("lepFSR_mass",&lepFSR_mass_float);
@@ -1665,7 +1738,11 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("pt_leadingjet_pt30_eta2p5_jesdn",&pt_leadingjet_pt30_eta2p5_jesdn,"pt_leadingjet_pt30_eta2p5_jesdn/F");
     tree->Branch("pt_leadingjet_pt30_eta2p5_jerup",&pt_leadingjet_pt30_eta2p5_jerup,"pt_leadingjet_pt30_eta2p5_jerup/F");
     tree->Branch("pt_leadingjet_pt30_eta2p5_jerdn",&pt_leadingjet_pt30_eta2p5_jerdn,"pt_leadingjet_pt30_eta2p5_jerdn/F");*/
-
+	
+	//L1 jets
+	tree->Branch("L1jet_pt",&L1jet_pt_float);
+	tree->Branch("L1jet_eta",&L1jet_eta_float);
+	tree->Branch("L1jet_phi",&L1jet_phi_float);
 
     // merged jets
     //tree->Branch("mergedjet_iscleanH4l",&mergedjet_iscleanH4l);
@@ -1773,6 +1850,12 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     // Higgs variables directly from GEN particle
     tree->Branch("GENHmass",&GENHmass,"GENHmass/F");*/
 
+    // quark
+    tree->Branch("quark_pt", &quark_pt_float);
+    tree->Branch("quark_eta", &quark_eta_float);
+    tree->Branch("quark_phi", &quark_phi_float); 
+    tree->Branch("quark_flavour", &quark_flavour);
+    tree->Branch("quark_VBF", &quark_VBF);   
 
     // Jets
     tree->Branch("n_GENjets", &n_GENjets);
@@ -1808,14 +1891,17 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
 void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& iSetup,
                                    std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger, 
                                    std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
-                                   std::vector<pat::Jet> selectedMergedJets
-                                   )
+                                   std::vector<pat::Jet> selectedMergedJets,
+								   edm::Handle<BXVector<l1t::Jet> > bxvCaloJets,
+								   //edm::Handle<edm::View<pat::Muon> > muons,
+                           		   //edm::Handle<edm::View<pat::Electron> > electrons)
+                           		   std::vector<pat::Muon> AllMuons, std::vector<pat::Electron> AllElectrons)
 {
 
 //    std::string DATAPATH = std::getenv( "CMSSW_BASE" );
 //    if(year == 2018)    DATAPATH+="/src/UFHZZAnalysisRun2/KalmanMuonCalibrationsProducer/data/roccor.Run2.v3/RoccoR2018.txt";
 //    if(year == 2017)    DATAPATH+="/src/UFHZZAnalysisRun2/KalmanMuonCalibrationsProducer/data/roccor.Run2.v3/RoccoR2017.txt";
-//    if(year == 2016)    DATAPATH+="/src/UFHZZAnalysisRun2/KalmanMuonCalibrationsProducer/data/roccor.Run2.v3/RoccoR2016.txt";
+//    if(year == 2016)   \ DATAPATH+="/src/UFHZZAnalysisRun2/KalmanMuonCalibrationsProducer/data/roccor.Run2.v3/RoccoR2016.txt";
 //    RoccoR  *calibrator = new RoccoR(DATAPATH); 
 //    calibrator = new RoccoR(DATAPATH);
    
@@ -1823,10 +1909,15 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
     using namespace edm;
     using namespace pat;
     using namespace std;
+	
 
     // Jet Info
     double tempDeltaR = 999.0;
     //std::cout<<"ELISA = "<<"good jets "<<goodJets.size()<<std::endl;
+
+	//reco::Candidate::const_iterator ele;
+	//reco::Candidate::const_iterator mu;
+	//edm::View<BXVector<l1t::Jet>>::const_iterator l1jet;
     n_jets=goodJets.size();
     for( unsigned int k = 0; k < goodJets.size(); k++) {
 
@@ -1837,9 +1928,70 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
         jet_mass.push_back(goodJets[k].mass());
         jet_csv_cTag_vsL.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") / (goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probuds") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probg")) );
 				jet_csv_cTag_vsB.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") / (goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probb") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probbb") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:problepb")) );
+		
+		for(unsigned int imu=0; imu<AllMuons.size(); imu++){
+			double this_dR_jetLep = deltaR(goodJets[k].eta(), goodJets[k].phi(), AllMuons[imu].eta(), AllMuons[imu].phi());
+			if(this_dR_jetLep<0.6){
+                lep_pt.push_back(AllMuons[imu].pt());
+                lep_eta.push_back(AllMuons[imu].eta());
+                lep_phi.push_back(AllMuons[imu].phi());
+                lep_mass.push_back(AllMuons[imu].mass());
+                lep_ID.push_back(AllMuons[imu].pdgId());
+			}
+		}
 
-       
+		for(unsigned int iel=0; iel<AllElectrons.size(); iel++){
+            double this_dR_jetLep = deltaR(goodJets[k].eta(), goodJets[k].phi(), AllElectrons[iel].eta(), AllElectrons[iel].phi());
+            if(this_dR_jetLep<0.6){
+                lep_pt.push_back(AllElectrons[iel].pt());
+                lep_eta.push_back(AllElectrons[iel].eta());
+                lep_phi.push_back(AllElectrons[iel].phi());
+                lep_mass.push_back(AllElectrons[iel].mass());
+                lep_ID.push_back(AllElectrons[iel].pdgId());
+            }
+        }		
+
+		/*for(ele = electrons->begin(); ele != electrons->end(); ele++){
+			this_dR_jetLep = deltaR(goodJets[k].eta(), goodJets[k].phi(), ele->eta(), ele->phi());
+			if(this_dR_jetLep<0.6){
+				lep_pt.push_back(ele->pt());
+				lep_eta.push_back(ele->eta());
+				lep_phi.push_back(ele->phi());
+				lep_mass.push_back(ele->mass());
+				lep_ID.push_back(ele->pdgId());
+			}
+		}
+
+		for(mu = muons->begin(); mu != muons->end(); mu++){
+            this_dR_jetLep = deltaR(goodJets[k].eta(), goodJets[k].phi(), mu->eta(), mu->phi());
+            if(this_dR_jetLep<0.6){
+                lep_pt.push_back(mu->pt());
+                lep_eta.push_back(mu->eta());
+                lep_phi.push_back(mu->phi());
+                lep_mass.push_back(mu->mass());
+                lep_ID.push_back(mu->pdgId());
+            }
+        }*/
     } // loop over jets
+	
+	//L1 jets Variables
+	/*for(l1jet = bxvCaloJets->begin(); l1jet != bxvCaloJets->end(); l1jet++){
+    	L1jet_pt.push_back(l1jet->pt());
+		L1jet_eta.push_back(l1jet->eta());
+		L1jet_phi.push_back(l1jet->phi());
+	}*/
+	/*for(size_t kjet=0; kjet<bxvCaloJets->size(); kjet++){
+		L1jet_pt.push_back((*bxvCaloJets)[kjet].pt());
+        L1jet_eta.push_back((*bxvCaloJets)[kjet].eta());
+        L1jet_phi.push_back((*bxvCaloJets)[kjet].phi());
+	}*/
+
+	for (std::vector<l1t::Jet>::const_iterator l1jet = bxvCaloJets->begin(0); l1jet != bxvCaloJets->end(0); ++l1jet) {
+		L1jet_pt.push_back(l1jet->hwPt());
+		L1jet_eta.push_back(l1jet->hwEta());
+		L1jet_phi.push_back(l1jet->hwPhi());
+	}
+
 
 
 
@@ -1914,23 +2066,76 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
 
 /*void UFHZZ4LAna::setGENVariables(//edm::Handle<reco::GenParticleCollection> prunedgenParticles,
                                  //edm::Handle<edm::View<pat::PackedGenParticle> > packedgenParticles,
-                                 edm::Handle<edm::View<reco::GenJet> > genJets)*/
-void UFHZZ4LAna::setGENVariables(edm::Handle<edm::View<reco::GenJet> > genJets)
+                                 edm::Handle<edm::View<reco::GenJet> > genJets)
+void UFHZZ4LAna::setGENVariables(edm::Handle<reco::GenParticleCollection> prunedgenParticles,
+				 edm::Handle<edm::View<reco::GenJet> > genJets)*/
+void UFHZZ4LAna::setGENVariables(edm::Handle<reco::GenParticleCollection> prunedgenParticles,
+                                 edm::Handle<edm::View<pat::PackedGenParticle> > packedgenParticles,
+                                 edm::Handle<edm::View<reco::GenJet> > genJets)
 {
 
-        edm::View<reco::GenJet>::const_iterator genjet; 
+	reco::GenParticleCollection::const_iterator genPart;
+	bool first_quarkgen=false;
+	for(genPart = prunedgenParticles->begin(); genPart != prunedgenParticles->end(); genPart++) {
+		if(abs(genPart->pdgId())==1 || abs(genPart->pdgId())==2 || abs(genPart->pdgId())==3 || abs(genPart->pdgId())==4 || abs(genPart->pdgId())==5 || abs(genPart->pdgId())==6  || abs(genPart->pdgId())==7  || abs(genPart->pdgId())==23  || abs(genPart->pdgId())==24 || abs(genPart->pdgId())==25){
+		//double dR_min=1000;
+		//cout<<"pdg: "<< abs(genPart->pdgId()) <<"  pT: "<<genPart->pt() <<"   eta: "<<genPart->eta() <<"   phi: "<<genPart->phi() <<endl;
+		const reco::Candidate * mom = genPart->mother(0);
+		//cout<<"mother: "<< mom->pdgId()<<"   pT: "<< mom->pt() <<"   eta: "<< mom->eta() <<"   phi: "<< mom->phi() <<endl;
+		/*int n = genPart->numberOfDaughters();
+                for(int j_d = 0; j_d < n; ++ j_d) {
+                	const reco::Candidate * d = genPart->daughter( j_d );
+                        cout<<"daughter: "<<d->pdgId()<<"   pT: "<< d->pt() <<"   eta: "<< d->eta() <<"   phi: "<< d->phi() <<endl;
+                }*/
+		bool Higgs_daughter=false;
+		int n = genPart->numberOfDaughters();
+			if(mom->pdgId()==2212 && first_quarkgen==false){
+				//cout<<"aaa"<<endl;
+				for(int j_d = 0; j_d < n; ++ j_d) {
+				//cout<<"bbb"<<endl;
+                const reco::Candidate * d = genPart->daughter( j_d );
+				//cout<<"daughter: "<<d->pdgId()<<"   pT: "<< d->pt() <<"   eta: "<< d->eta() <<"   phi: "<< d->phi() <<endl;
+				if((d->pdgId())==25){
+					//cout<<"ccc"<<endl;
+					Higgs_daughter=true;
+				}
+				if(Higgs_daughter==true && (abs(d->pdgId())==1 || abs(d->pdgId())==2 || abs(d->pdgId())==3  || abs(d->pdgId())==4 || abs(d->pdgId())==5 || abs(d->pdgId())==6 || abs(d->pdgId())==7)){
+					//cout<<"daughter: "<<d->pdgId()<<"   pT: "<< d->pt() <<"   eta: "<< d->eta() <<"   phi: "<< d->phi() <<endl;
+					quark_pt.push_back(d->pt());
+					quark_eta.push_back(d->eta());
+					quark_phi.push_back(d->phi());
+					quark_flavour.push_back(d->pdgId());
+					quark_VBF.push_back(true);
+					first_quarkgen=true;
+				} 
+                		}
+                	}
+			if(abs(genPart->pdgId())==4 && (mom->pdgId())==25){
+				quark_pt.push_back(genPart->pt());    
+                                quark_eta.push_back(genPart->eta());
+                                quark_phi.push_back(genPart->phi());
+                                quark_flavour.push_back(genPart->pdgId());
+                                quark_VBF.push_back(false);
+			}
+
+		}
+		
+		
+	}
+
+
+	edm::View<reco::GenJet>::const_iterator genjet; 
 	
 	for(genjet = genJets->begin(); genjet != genJets->end(); genjet++) {
 		                          
 		  double pt = genjet->pt();  double eta = genjet->eta();
 		  //if (pt<30.0 || abs(eta)>4.7) continue;
-
-		  
-      GENjet_pt.push_back(genjet->pt());
-      GENjet_eta.push_back(genjet->eta());
-      GENjet_phi.push_back(genjet->phi());
-      GENjet_mass.push_back(genjet->mass());
-	n_GENjets++;
+		  GENjet_pt.push_back(genjet->pt());
+		  GENjet_eta.push_back(genjet->eta());
+		  GENjet_phi.push_back(genjet->phi());
+		  GENjet_mass.push_back(genjet->mass());
+		 // cout<<"jet: "<<n_GENjets<<"   pT: "<< genjet->pt() <<"   eta: "<< genjet->eta() <<"   phi: "<< genjet->phi() <<endl;
+		  n_GENjets++;
 	}// loop over gen jets
 
          
